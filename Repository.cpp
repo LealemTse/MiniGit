@@ -1,1 +1,7 @@
-#include "Repository.h"
+class Repository{
+public:
+  sting worktree;
+  strig git;
+
+Repository();
+};
