@@ -1,6 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <string>
 #include <unordered_map>
 #include <filesystem>
@@ -54,7 +53,7 @@ public:
 
             if(line.empty()) continue;
 
-            if(line.front()=='[' && line.back()==']) {
+            if(line.front()=='[' && line.back()==']') {
                 section=line.substr(1,line.size()-2);
             } else {
                 auto pos = line.find('=');
@@ -72,5 +71,16 @@ public:
             }
         }
     }
-
 };
+
+int main() {
+    try {
+        GitRepository repo(".", false);
+        cout << "MiniGit repository loaded successfully!\n";
+    } catch (const exception& e) {
+        cerr << "Error: " << e.what() << endl;
+    }
+
+    return 0;
+}
+}
