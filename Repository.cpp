@@ -75,7 +75,7 @@ public:
 
 int main() {
     try {
-        GitRepository repo(".", false);
+        Repository repo(".", false);
         cout << "MiniGit repository loaded successfully!\n";
     } catch (const exception& e) {
         cerr << "Error: " << e.what() << endl;
