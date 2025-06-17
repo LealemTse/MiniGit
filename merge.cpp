@@ -5,8 +5,6 @@
 #include <set>
 using namespace std;
 
-string branch2;
-string currnetBranch;
 
 
 //gets the  current branch
@@ -140,6 +138,7 @@ void merge(const string &base, const string &currentBranch, const string &target
 int main(int argc, char* argv[]){
     if(argc != 3){
         cout<<"Usage: merge <branch name>"
+        return 1;
     }
 
     string command = argv[1];
