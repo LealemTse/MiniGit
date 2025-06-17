@@ -116,9 +116,9 @@ void merge(const string &base, const string &currentBranch, const string &target
             result.push_back(currentBranchLines[i]);
         }else{
             result.push_back("<<<<<<current branch");
-            result.push_back(currentLineBranch[i]);
+            result.push_back(currentBranchLines[i]);
             result.push_back("========");
-            result.push_back(targetBranchLine[i]);
+            result.push_back(targetBranchLines[i]);
             result.push_back("<<<<<<target branch");
         }
             
