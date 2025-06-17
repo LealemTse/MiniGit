@@ -99,34 +99,39 @@ void merge(const string &base, const string &currentBranch, const string &target
     vector<string> currentBranchLines = readFile(currentBranchPath);
     vector<string> targetBranchLines = readFile(targetBranchPath);
 
-    size_t maxSize = max(baseLines.size(), max(currentBranchLines.size(), targetBramchLines.size())); // gets maximmum number of lines from the three
+    size_t maxSize = max(baseLines.size(), max(currentBranchLines.size(), targetBranchLines.size())); // gets maximmum number of lines from the three
 
     vector<string> result;
 
     for (size_t i = 0; i < maxSize; i++){
-        if(baseLines.size()>i && currentBranchLines.size()>i && targetBranchLines.size()>i){
-            
-        if(baseLines[i]==currentBranchLines[i] && baseLines[i]==targetBranchLines[i]){
-            result.push_back(baseLines[i])
-        }else if (currentBranchLines[i] == targetBranchLines[i]){
-            result.push_back(currentBranchLines[i]);
-        }else if (baseLines[i] == currentBranchLines[i]){
-            result.push_back(targetBranchLines[i]);
-        }else if (baseLines[i] == targetBranchLines[i]){
-            result.push_back(currentBranchLines[i]);
+        string baseLine = "", currentBranchLine = "", targetBranchLine = "";
+        
+        //check if the lines exist
+        
+        if(baseLines.size()>i) baseLine = baseLines[i];
+        if(currentBranchLines.size()>i) currentBranchLine = currentBranchLines[i];
+        if(targetBranchLines.size()>i) targetBranchLine = targetBranchLines[i];
+
+        //detect conflict
+        if(baseLine==currentBranchLine && baseLine==targetBranchLine){
+            result.push_back(baseLine);
+        }else if (currentBranchLine == targetBranchLine){
+            result.push_back(currentBranchLine);
+        }else if (baseLine == currentBranchLine){
+            result.push_back(targetBranchLine);
+        }else if (baseLine == targetBranchLine){
+            result.push_back(currentBranchLine);
         }else{
             result.push_back("<<<<<<current branch");
-            result.push_back(currentBranchLines[i]);
+            result.push_back(currentBranchLine);
             result.push_back("========");
-            result.push_back(targetBranchLines[i]);
+            result.push_back(targetBranchLine);
             result.push_back("<<<<<<target branch");
         }
-            
-        }
-        
+
+
     }
-
-
+    //create a file containing the merged lines
     string mergedFile = ".minigit/merged.txt";
     ofstream out(mergedFile);
     for (size_t i = 0; i<result.size(); i++){
@@ -137,21 +142,21 @@ void merge(const string &base, const string &currentBranch, const string &target
 
 int main(int argc, char* argv[]){
     if(argc != 3){
-        cout<<"Usage: merge <branch name>"
+        cout<<"Usage: merge <branch name>";
         return 1;
     }
 
     string command = argv[1];
     string targetBranch = argv[2];
 
-    if(command == 'merge'){
+    if(command == "merge"){
         string currentBranch = getCurrentBranch();
-        cout<<"current branch: currentBranch";
+        cout<<"current branch: "<< currentBranch;
         string base = getLeastCommonAnscestor(currentBranch, targetBranch);
         string commitA = getBranchCommit(currentBranch);
         string  commitB = getBranchCommit(targetBranch);
         merge(base, commitA, commitB);
-        cout<<"Merge completed. Merged file: .minigit/merged.txt"
+        cout<<"Merge completed. Merged file: .minigit/merged.txt";
     }
 
 }
