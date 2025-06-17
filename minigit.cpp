@@ -24,7 +24,6 @@ string customHash(const string& filecontent ){
     char hex[9];
     snprintf(hex,9,"%08x",hash);
     return string(hex);
-
 }
 
 class Commit{
@@ -73,7 +72,7 @@ public:
 
         }
     #endif
-        cout<<"Directory "<<path<<" was created! "<<endl;  
+        //cout<<"Directory "<<path<<" was created! "<<endl;  
 
     }
 
@@ -90,7 +89,9 @@ class Minigit{
         createDirectory(gitDir +"/refs/heads");
         
         commit("Initial commit","System");
+        cout<<"Initialized empty MiniGit repository in ./"<<gitDir<<endl;
     }
+    
 public:
     Minigit(string dir):gitDir(dir),objectsDir(dir+"/objects"){};
     
@@ -102,7 +103,7 @@ public:
         }
     }
     void init(){
-       initRepo();
+        initRepo();
     }
     
     string createBlob(const string& content){
@@ -119,6 +120,11 @@ public:
     }
 
     void commit(const string& message,const string& author){
+        if (blob.empty()) {
+        cout << "No files added to commit!"<<endl;
+        return;
+        }
+
         Commit* newCommit= new Commit(message,author,head);
         for(const auto& pair:blob){
             newCommit->blobHashes.push_back(pair.first);
@@ -128,8 +134,8 @@ public:
         cout<<"Created commit: "<<newCommit->hash.substr(0,8)<<"\n"
             << "Date:   " << ctime(&newCommit->timestamp) 
             << "Files:  " << newCommit->blobHashes.size() << endl;
+        
     }
-    
 
     string getBlob(const string& hash){
         if(blob.count(hash)){
@@ -164,9 +170,7 @@ int main(int argc,char* argv[]) {
         return 1;
     }
 
-
-    return 0;
-    
+    return 0; 
 }
 
     
