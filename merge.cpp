@@ -1,5 +1,3 @@
-// does not handle conflict yet
-
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -93,48 +91,47 @@ vector<string> readFile(const string &path)
     return lines;
 }
 
-void mergeFiles(const string &base, const string &currentBranch, const string &branch2)
+void mergeFiles(const string &base, const string &currentBranch, const string &targetBranch)
 {
     string basePath = ".minigit/objects/" + base;
     string currentBranchPath = ".minigit/objects/" + currentBranch;
-    string branch2Path = ".minigit/objects/" + branch2;
+    string targetBranchPath = ".minigit/objects/" + targetBranch;
 
     vector<string> baseLines = readFile(basePath);
     vector<string> currentBranchLines = readFile(currentBranchPath);
-    vector<string> branch2Lines = readFile(branch2Path);
+    vector<string> targetBranchLines = readFile(targetBranchPath);
 
-    size_t maxSize = max(base.size(), max(currentBranch.size(), branch2.size()));
+    size_t maxSize = max(baseLines.size(), max(currentBranchLines.size(), targetBramchLines.size())); // gets maximmum number of lines from the three
 
     vector<string> result;
 
-    for (size_t i = 0; i < maxSize; ++i)
-    {
-        if (base[i] == currentBranch[i] && base[i] == branch2[i])
-        {
-            result.push_back(currentBranch[i]);
+    for (size_t i = 0; i < maxSize; i++){
+        if(baseLines.size()>i && currentBranchLines.size()>i && targetBranchLines.size()>i){
+            
+        if(baseLines[i]==currentBranchLines[i] && baseLines[i]==targetBranchLines[i]){
+            result.push_back(baseLines[i])
+        }else if (currentBranchLines[i] == targetBranchLines[i]){
+            result.push_back(currentBranchLines[i]);
+        }else if (baseLines[i] == currentBranchLines[i]){
+            result.push_back(targetBranchLines[i]);
+        }else if (baseLines[i] == targetBranchLines[i]){
+            result.push_back(currentBranchLines[i]);
+        }else{
+            result.push_back("<<<<<<current branch");
+            result.push_back(currentLineBranch[i]);
+            result.push_back("========");
+            result.push_back(targetBranchLine[i]);
+            result.push_back("<<<<<<target branch");
         }
-
-        else if (currentBranch[i] == branch2[i])
-        {
-            result.push_back(currentBranch[i]);
+            
         }
-
-        else if (base[i] == currentBranch[i])
-        {
-            result.push_back(branch2[i]);
-        }
-
-        else if (base[i] == branch2[i])
-        {
-            result.push_back(currentBranch[i]);
-        }
+        
     }
 
 
     string mergedFile = ".minigit/merged.txt";
     ofstream out(mergedFile);
-    for (size_t i = 0; i<result.size(); i++)
-    {
+    for (size_t i = 0; i<result.size(); i++){
         out << result[i] << endl;
     }
 }
