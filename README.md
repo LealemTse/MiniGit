@@ -1,3 +1,37 @@
+# MiniGit
+
+MiniGit is a minimal, C++-based version control system inspired by Git.
+
+## 🔧 Requirements
+
+- C++17 or higher
+- CMake (version 3.10 or above)
+- A terminal or shell (Linux/macOS or Git Bash on Windows)
+- g++ or clang++
+
+---
+
+## 🛠️ Build Instructions
+
+### Step 1: Clone or open the project in CLion or your terminal.
+
+### Step 2: Build using CMake (if not using CLion)
+
+```bash
+./cmake-build-debug/MiniGit init
+```
+### Then
+```bash
+./MiniGit init
+```
+### It should say this 
+```bash
+Initialized empty MiniGit repository in ./.minigit
+```
+
+
+
+
 
 # 🧩 MiniGit Project Board
 
