@@ -4,6 +4,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <set>
 using namespace std;
 
 string branch2;
@@ -53,6 +54,30 @@ string getParentCommit(const string& commitId) {
         }
     }
     return "";
+}
+
+// gets least common anscestr of  current branch and branch2
+
+string getLeastCommonAnscestor(const string& branch1, const string& branch2){
+    set<string> ancestors; //to store all anscestrs of branch1
+    string curr = branch1;
+    
+    while (!curr.empty()) {
+        ancestors.insert(curr); 
+        curr = getParentCommit(curr); 
+    }
+    
+
+    curr = branch2;
+//searches if branch2 has a common anscestor with branch1 and if there is, returns the first one
+    
+    while (!curr.empty()) {
+        if (ancestors.count(curr)){
+            return curr;
+        }else{
+            curr = getParentCommit(curr);
+        }
+    }
 }
 
 
