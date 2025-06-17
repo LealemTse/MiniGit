@@ -1,23 +1,14 @@
+#include "Repository.h"
 #include <iostream>
 #include <fstream>
-#include <string>
-#include <unordered_map>
 #include <filesystem>
 
-using namespace std;
 namespace fs = std::filesystem;
 
-// Represents a MiniGit repository by loading config and checking validity
-class Repository {
-public:
-    string worktree;                       // Path to working directory
-    string gitdir;                         // Path to .minigit/ folder
-    unordered_map<string, string> config;  // Configuration key-values
-
-    // Constructor: loads an existing MiniGit repository
-    Repository(const string& path, bool force = false) {
+//    ===========Constructor: loads an existing MiniGit repository===========
+    Repository::Repository(const string& path, bool force = false) {
         worktree = path;
-        gitdir = path + "/.minigit"; // <-- fixed typo here
+        gitdir = path + "/.minigit";
 
         // If not in force mode, ensure the .minigit folder exists
         if (!force && !fs::is_directory(gitdir)) {
@@ -39,8 +30,21 @@ public:
             }
         }
     }
+//==================CREATEING THE .minigit REPO======================
+void Repository::init() {
+        if(fs::exists(gitdir)){
+            throw runtime_error(".minigit already exists");
+        }
+        fs::create_directory(gitdir);
+        fs::create_directory(repoFile("objects"));
+        fs::create_directory(repoFile("refs"));
 
-    // Resolve full path to a file in .minigit/
+        //WRITEING HEAD
+        ofstream configFile(repoFile("HEAD"));
+
+    }
+
+//==================Resolve full path to a file in .minigit/======================
     string repoFile(const string& relativePath) {
         return gitdir + "/" + relativePath;
     }
