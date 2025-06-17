@@ -91,7 +91,7 @@ vector<string> readFile(const string &path)
     return lines;
 }
 
-void mergeFiles(const string &base, const string &currentBranch, const string &targetBranch)
+void merge(const string &base, const string &currentBranch, const string &targetBranch)
 {
     string basePath = ".minigit/objects/" + base;
     string currentBranchPath = ".minigit/objects/" + currentBranch;
@@ -136,8 +136,23 @@ void mergeFiles(const string &base, const string &currentBranch, const string &t
     }
 }
 
-int main(){
-    Repository repo(".", false);
-    currentBranch = repo.getCurrentBranch();
-    cout << "Current branch: " << currentBranch << endl;
+
+int main(int argc, char* argv[]){
+    if(argc != 3){
+        cout<<"Usage: merge <branch name>"
+    }
+
+    string command = argv[1];
+    string targetBranch = argv[2];
+
+    if(command == 'merge'){
+        string currentBranch = getCurrentBranch();
+        cout<<"current branch: currentBranch";
+        string base = getLeastCommonAnscestor(currentBranch, targetBranch);
+        string commitA = getBranchCommit(currentBranch);
+        string  commitB = getBranchCommit(targetBranch);
+        merge(base, commitA, commitB);
+        cout<<"Merge completed. Merged file: .minigit/merged.txt"
+    }
+
 }
