@@ -3,16 +3,31 @@
 
 #include <string>
 #include <unordered_map>
+#include <vector>
 using namespace std;
-class Repository {
-public:
-  string worktree;
-  string gitdir;
-  unordered_map<string, string> config;
 
-  Repository(const string& path, bool force=false);
+struct Commit {
+  string hash;
+  string message;
+  string madeby;
+  string timestamp;
+  vector<string> files;
+};
+
+class Repository {
+private:
+  string gitdir = ".minigit";
+  string objectDir= ".minigit/objects";
+  unordered_map<string, string> blob;
+  vector<Commit> commits;
+
+  string getTime();
+  string customHash(string& content);
+  string creatBlob(string& content);
+
+public:
   void init();
-  string repoFile(const string& relativePath);
-  void loadConfig(const string& configPath);
+  void addFile(string& filepath);
+  void commit(string& message, string madeby);
 };
 #endif

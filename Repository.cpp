@@ -1,12 +1,51 @@
 #include "Repository.h"
 #include <iostream>
+#include <ctime>
+#include <functional>
+#include<sstream>
 #include <fstream>
 #include <filesystem>
 
+using namespace std;
 namespace fs = std::filesystem;
 
-//    ===========Constructor: loads an existing MiniGit repository===========
-    Repository::Repository(const string& path, bool force = false) {
+//=============MiniGit ADD============
+void Repository::addFile(const string& filepath) {
+    //Read the file content
+    ifstream file(filepath, ios::binary);
+    if(!file) {
+        cerr<<"ERROR: Could not open file "<<filepath<<endl;
+        return;
+    }
+    stringstream buffer;
+    buffer <<file.rdbuf();
+    string content = buffer.str();
+    //Hashing
+    string hash=customHash(content);
+    //Saving to .minigit/object/<hash>
+    string objPath = repoFile("objects/" + hash);
+    if(!fs::exists(objPath)) {
+        ofstream out(objPath, ios::binary);
+        if(!out) {
+            cerr<<"ERROR: Failed to write blob to: "<<objPath<<endl;
+            return;
+        }
+        out<<content;
+        out.close();
+    }
+    cout<<"Added file '"<<filepath<<"'as blob: "<<hash<<endl;
+    ofstream objFile(objPath, ios::binary);
+    if(!objFile) {
+        throw runtime_error("Could not open file " + objPath);
+    }
+    objFile<<content;
+    objFile.close();
+
+    cout<<"ADDED FILE: "<<filepath<<endl;
+    cout<<"Saved Object: "<<hash<<endl;
+}
+//===========Constructor: loads an existing MiniGit repository===========
+    Repository::Repository(const string& path, bool force) {
         worktree = path;
         gitdir = path + "/.minigit";
 
@@ -24,6 +63,9 @@ namespace fs = std::filesystem;
 
         // If not in force mode, verify version from config
         if (!force) {
+            if(config.find("core.repositoryformatversion")==config.end()) {
+                throw runtime_error("Missing 'core.repositoryversion' in config file");
+            }
             int version = stoi(config["core.repositoryformatversion"]);
             if (version != 0) {
                 throw runtime_error("Unsupported repositoryformatversion: " + to_string(version));
@@ -33,72 +75,45 @@ namespace fs = std::filesystem;
 //==================CREATEING THE .minigit REPO======================
 void Repository::init() {
         if(fs::exists(gitdir)){
-            throw runtime_error(".minigit already exists");
+            throw runtime_error("ERROR: .minigit already exists");
         }
         fs::create_directory(gitdir);
-        fs::create_directory(repoFile("objects"));
-        fs::create_directory(repoFile("refs"));
+        fs::create_directory(objectDir);
+
 
         //WRITEING HEAD
-        ofstream configFile(repoFile("HEAD"));
+        ofstream headFile(gitdir + "/HEAD");
+        headFile<<"ref: ref/head/main\n";
+        headFile.close();
 
+        //WRITE CONFIG
+        ofstream config(gitdir+ "/config");
+        config<<"[core]"<<endl;
+        config<<"repsitoryformatversion=0\n"<<endl;
+        config.close();
+
+        cout<<"Initialization Empty MiniGit Repository in"<<gitdir<<end;
+        }
+//======hsuhing==================
+    string customHash(const string& filecontent) {
+    unsigned int hash = 0;
+    for (char c : filecontent) {
+        hash = (hash * 32) + hash + c;
     }
+    char hex[9];
+    snprintf(hex, 9, "%08x", hash);
+    return string(hex);
+}
+    string Repository::createBlob(const string& content){
+        string hash = customeHash(content);
+        string path = objectDir + "/" + hash;
 
-//==================Resolve full path to a file in .minigit/======================
-    string repoFile(const string& relativePath) {
-        return gitdir + "/" + relativePath;
-    }
-
-    // Load INI-style config file into key-value map
-    void loadConfig(const string& configPath) {
-        ifstream file(configPath);
-        if (!file) throw runtime_error("Could not open config file");
-
-        string line, section;
-        while (getline(file, line)) {
-            // Remove comments
-            auto comment = line.find('#');
-            if (comment != string::npos)
-                line = line.substr(0, comment);
-
-            // Trim whitespace
-            line.erase(0, line.find_first_not_of(" \t\r\n"));
-            line.erase(line.find_last_not_of(" \t\r\n") + 1);
-
-            if (line.empty()) continue;
-
-            // Handle section headers like [core]
-            if (line.front() == '[' && line.back() == ']') {
-                section = line.substr(1, line.size() - 2);
-            } else {
-                // Parse key=value
-                auto pos = line.find('=');
-                if (pos == string::npos) continue;
-
-                string key = line.substr(0, pos);
-                string value = line.substr(pos + 1);
-
-                // Trim whitespace around key and value
-                key.erase(0, key.find_first_not_of(" \t"));
-                key.erase(key.find_last_not_of(" \t") + 1);
-                value.erase(0, value.find_first_not_of(" \t"));
-                value.erase(value.find_last_not_of(" \t") + 1);
-
-                // Store in format "core.repositoryformatversion"
-                config[section + "." + key] = value;
-            }
+        if(!fs::exists(path)) {
+            ofstream file(path, ios::biniary);
         }
     }
-};
 
-// Entry point
-int main() {
-    try {
-        Repository repo(".", false); // Will look for .minigit/config
-        cout << "MiniGit repository loaded successfully!\n";
-    } catch (const exception& e) {
-        cerr << "Error: " << e.what() << endl;
-    }
 
-    return 0;
-}
+
+
+
