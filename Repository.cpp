@@ -23,10 +23,10 @@ string customHash(const string& filecontent) {
 
 //=======================Commit===============================
 Commit::Commit(string msg, string a, Commit* p)
-    : message(msg), author(a), parent(p), timestamp(time(nullptr)) {}
+    : message(msg), madeby(a), parent(p), timestamp(time(nullptr)) {}
 
 void Commit::generateHash() {
-    string data = message + author + to_string(timestamp);
+    string data = message + madeby + to_string(timestamp);
     for (const auto& bh : blobHashes) data += bh;
     if (parent) data += parent->hash;
     hash = customHash(data);

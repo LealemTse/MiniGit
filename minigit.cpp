@@ -4,6 +4,9 @@
 #include <unordered_map>
 #include <vector>
 #include <ctime>
+
+#include "Repository.h"
+#include "log.h"
 using namespace std;
 
 #ifdef _WIN32
@@ -30,17 +33,17 @@ class Commit{
 public:
     string hash;
     string message;
-    string author;
+    string madeby;
     time_t timestamp;
     vector<string>blobHashes;
     Commit* parent;
 
     Commit(string msg,string a,Commit* p=nullptr)
-        :message(msg),author(a),parent(p),timestamp(time(nullptr)){}
+        :message(msg),madeby(a),parent(p),timestamp(time(nullptr)){}
     
 
     void generateHash(){
-        string data= message + author +to_string(timestamp);
+        string data= message + madeby +to_string(timestamp);
         for(const auto& bh:blobHashes){
             data+=bh;
         }
@@ -119,13 +122,13 @@ public:
         return hash;
     }
 
-    void commit(const string& message,const string& author){
+    void commit(const string& message,const string& madeby){
         if (blob.empty()) {
         cout << "No files added to commit!"<<endl;
         return;
         }
 
-        Commit* newCommit= new Commit(message,author,head);
+        Commit* newCommit= new Commit(message,madeby,head);
         for(const auto& pair:blob){
             newCommit->blobHashes.push_back(pair.first);
         }
@@ -164,6 +167,10 @@ int main(int argc,char* argv[]) {
         }
         string message=argv[3];
         minigit.commit(message,"User");
+    }
+    else if(command=="log") {
+        Repository repo;
+        log::showlog(repo);
     }
     else{
         cout<<"Error Unknown Command: "<<command<<endl;

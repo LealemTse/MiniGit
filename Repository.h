@@ -15,10 +15,11 @@ class Commit {
 public:
   string hash;
   string message;
-  string author;
+  string madeby;
   time_t timestamp;
   vector<std::string> blobHashes;
   Commit* parent;
+  Commit* getHead() const {return head;}
 
   Commit(string msg, string a, Commit* p = nullptr);
   void generateHash();
@@ -45,7 +46,7 @@ public:
   ~Repository();
   void init();
   std::string createBlob(const string& content);
-  void commit(const string& message, const std::string& author);
+  void commit(const string& message, const std::string& madeby);
   std::string getBlob(const string& hash);
   void addFile(const string& filepath);
 };
