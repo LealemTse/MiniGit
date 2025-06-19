@@ -159,6 +159,13 @@ int main(int argc,char* argv[]) {
     Minigit minigit(".minigit");
     if(command=="init"){
         minigit.init();
+    }else if (command == "add") {
+        if (argc < 3) {
+            cerr << "Usage: minigit add <file>" << endl;
+            return 1;
+        }
+        Repository repo;
+        repo.addFile(argv[2]);
     }
     else if(command=="commit"){
         if(argc<4 || string(argv[2]) !="-m"){
@@ -168,13 +175,16 @@ int main(int argc,char* argv[]) {
         string message=argv[3];
         minigit.commit(message,"User");
     }
-    else if(command=="log") {
+    else if(command =="log") {
         Repository repo;
-        log::showlog(repo);
+        log::showLog(repo);
     }
     else{
-        cout<<"Error Unknown Command: "<<command<<endl;
-        return 1;
+        if (fs::exists(".minigit")) {
+            cout << "MiniGit Repository Loaded Successfully" << endl;
+        } else {
+            cerr << "ERROR: No MiniGit repository found. Run 'minigit init' first." << endl;
+        }
     }
 
     return 0; 
