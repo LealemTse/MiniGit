@@ -19,7 +19,7 @@ public:
   time_t timestamp;
   vector<std::string> blobHashes;
   Commit* parent;
-  Commit* getHead() const {return head;}
+
 
   Commit(string msg, string a, Commit* p = nullptr);
   void generateHash();
@@ -49,6 +49,7 @@ public:
   void commit(const string& message, const std::string& madeby);
   std::string getBlob(const string& hash);
   void addFile(const string& filepath);
+  Commit* getHead() const {return head;}
 };
 
 #endif
