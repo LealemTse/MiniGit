@@ -24,6 +24,21 @@ Use `g++` to compile on any platform run:
 g++ -std=c++17 main.cpp Repository.cpp -o MiniGit
 ```
 For windows user it will creat an .exe file but for linux /MacOs use it will make the main file excutable. 
+-When running the above command if you encunter any problem with your  C++ compiler plase follow this steps:
+
+-Step: 1 Download and install MSYS2: https://www.msys2.org
+
+-Step: 2 Open the MSYS2 MinGW 64-bit shell
+
+-Step: 3 Run:
+```bash
+pacman -Syu  //This will update Your MSYS and follow the steps it shows you
+pacman -S mingw-w64-x86_64-gcc
+```
+Then run this again:
+```bash
+g++ -std=c++17 main.cpp Repository.cpp -o MiniGit
+```
 To creates a hidden .minigit/ folder for tracking changes:
 ```bash
 ./MiniGit init
@@ -51,14 +66,14 @@ g++ -std=c++17 main.cpp Repository.cpp -o MiniGit
 ```
 To Remove the init file run the following:
 
-###For linux/MacOS
+-For linux/MacOS
 ```bash
 rm -rf .minigit
 ```
 
-###For windows
+-For windows
 ```bash
-rmdir /s /q .minigit
+Remove-Item -Recurse -Force .minigit
 ```
 
 
