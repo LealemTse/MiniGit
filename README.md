@@ -50,10 +50,12 @@ g++ -std=c++17 main.cpp Repository.cpp -o MiniGit
 
 ```
 To Remove the init file run the following:
+
 ###For linux/MacOS
 ```bash
 rm -rf .minigit
 ```
+
 ###For windows
 ```bash
 rmdir /s /q .minigit
