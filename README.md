@@ -73,7 +73,7 @@ rm -rf .minigit
 
 -For windows
 ```bash
-rmdir /s /q .minigit
+Remove-Item -Recurse -Force .minigit
 ```
 
 
