@@ -124,6 +124,7 @@ void merge(const string &base, const string &currentBranch, const string &target
         }else if (baseLine == targetBranchLine){
             result.push_back(currentBranchLine);
         }else{
+            cout << "CONFLICT: both modified file.txt" << endl;
             result.push_back("<<<<<<current branch");
             result.push_back(currentBranchLine);
             result.push_back("========");
@@ -139,6 +140,38 @@ void merge(const string &base, const string &currentBranch, const string &target
     for (size_t i = 0; i<result.size(); i++){
         out << result[i] << endl;
     }
+}
+
+
+void diff(const string &commit1, const string &commit2){
+    vector<string> commit1Lines = readFile(".minigit/objects/" + commit1);
+    vector<string> commit2Lines = readFile(".minigit/objects/" + commit2);
+
+    size_t maxLines = max(commit1lines.size(), commit2lines.size());
+
+    for(size_t i = 0; i < maxLines; i++){
+        string commit1Line;
+        string commit2Line;
+        if(commit1Lines.size()<i){
+            commit1Line = "";
+        }else{
+            commit1Line = commit1Lines[i];
+        }
+
+        if(commit2Lines.size()<i){
+            commit2Line = "";
+        }else{
+            commit2Line = commit2Lines[i];
+        }
+
+        if(commit1Line!=commit2Line){
+            cout<<"-"<<commit1Line;
+            cout<<"+"<<commit2Line;
+        }else{
+            cout<<commit1Line;
+        }
+    }
+
 }
 
 
