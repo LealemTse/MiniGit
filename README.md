@@ -8,7 +8,9 @@ MiniGit is a minimal, C++-based version control system inspired by Git.
 - `commit` – snapshot changes with a message and madeby
 - `log` - see all the detail of the file commited
 - `branch` - where one is working on and create a new branch to work on
-- `checkout` - jump over to another branch and checkout or work there 
+- `checkout` - jump over to another branch and checkout or work there
+- `merge` - merges branches together
+- `diff` - shows the diffrenc between two files.
 
 ---
 ##  Requirements
@@ -77,6 +79,15 @@ To move from one branch to onther or checkout anther branch
 ```bash
 ./MiniGit checkout
 ```
+To merge branches:
+```bash
+./MiniGit merge <branch>
+```
+To see the diffrence:
+```bash
+./MiniGit diff <hash1> <hash2>
+```
+
 ##Example
 ```bash
 g++ -std=c++17 main.cpp Repository.cpp log.cpp branch.cpp checkout.cpp merge.cpp -o MiniGit
@@ -87,7 +98,13 @@ echo "Hello there this is MiniGit" >hello.txt
 ./MiniGit log
 ./MiniGit branch
 ./MiniGit branch Feature1
-./MiniGit checkout
+./MiniGit checkout Feature1
+echo "Hello there this is MiniGit, how are you?" >hello.txt
+./MiniGit add hello.txt
+./MiniGit commit -m "Add hello.txt"
+./MiniGit checkout main
+./MiniGit merge Feature1
+./MiniGit diff 63dgv37 f8er320
 
 ```
 To Remove the init file run the following:
