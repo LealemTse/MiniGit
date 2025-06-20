@@ -1,6 +1,7 @@
 #include "Repository.h"
 #include "checkout.h"
 #include "log.h"
+#include "merge.h"
 #include <iostream>
 #include <filesystem>
 #include "branch.h"
@@ -57,7 +58,31 @@ int main(int argc, char* argv[]) {
       }
       Checkout co;
       co.switchBranch(argv[2]);
+    }else if(command=="merge") {
+      if (argc !=3) {
+          cerr <<"Usage: MiniGit merge <branch>"<<endl;
+        return 1;
+      }
+      string targetBranch =argv[2];
+      string currentBranch = getCurrentBranch();
+      cout<<"Current Branch: " <<currentBranch <<endl;
+
+      string base = getLeastCommonAnscestor(currentBranch, targetBranch);
+      string commitA= getBranchCommit(currentBranch);
+      string commitB= getBranchCommit(targetBranch);
+
+      merge(base,commitA,commitB);
+      cout<<"Usage: MiniGti diff <commit1><commit2>"<<endl;
     }
+      else if(command == "diff") {
+        if(argc !=4) {
+          cerr<<"Usage: MiniGit diff <commit1> <commit2>" <<endl;
+          return 1;
+        }
+        string commit1 =argv[2];
+        string commit2 =argv[3];
+        diff(commit1,commit2);
+      }
       else {
         if (fs::exists(".minigit")) {
           cout << "MiniGit Repository Loaded Successfully" << endl;

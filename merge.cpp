@@ -9,7 +9,7 @@ using namespace std;
 
 
 
-//gets the  current branch
+
 string getCurrentBranch(){
     string path = ".minigit/HEAD";
     ifstream headFile(path);
@@ -27,7 +27,6 @@ string getCurrentBranch(){
     }
 }
 
-//gets commitid in a branch
 
 string getBranchCommit(const string& branchName) {
     string path = ".minigit/refs/heads/" + branchName;
@@ -41,7 +40,7 @@ string getBranchCommit(const string& branchName) {
 }
 
 
-//gets parentcommit
+
 
 string getParentCommit(const string& commitId) {
     ifstream file(".minigit/objects/" + commitId);
@@ -54,7 +53,6 @@ string getParentCommit(const string& commitId) {
     return "";
 }
 
-// gets least common anscestr of  current branch and branch2
 
 string getLeastCommonAnscestor(const string& branch1, const string& branch2){
     set<string> ancestors; //to store all anscestrs of branch1
@@ -67,7 +65,7 @@ string getLeastCommonAnscestor(const string& branch1, const string& branch2){
     
 
     curr = branch2;
-//searches if branch2 has a common anscestor with branch1 and if there is, returns the first one
+
     
     while (!curr.empty()) {
         if (ancestors.count(curr)){
@@ -108,13 +106,13 @@ void merge(const string &base, const string &currentBranch, const string &target
     for (size_t i = 0; i < maxSize; i++){
         string baseLine = "", currentBranchLine = "", targetBranchLine = "";
         
-        //check if the lines exist
+
         
         if(baseLines.size()>i) baseLine = baseLines[i];
         if(currentBranchLines.size()>i) currentBranchLine = currentBranchLines[i];
         if(targetBranchLines.size()>i) targetBranchLine = targetBranchLines[i];
 
-        //detect conflict
+        /
         if(baseLine==currentBranchLine && baseLine==targetBranchLine){
             result.push_back(baseLine);
         }else if (currentBranchLine == targetBranchLine){
@@ -134,7 +132,7 @@ void merge(const string &base, const string &currentBranch, const string &target
 
 
     }
-    //create a file containing the merged lines
+
     string mergedFile = ".minigit/merged.txt";
     ofstream out(mergedFile);
     for (size_t i = 0; i<result.size(); i++){
@@ -147,7 +145,7 @@ void diff(const string &commit1, const string &commit2){
     vector<string> commit1Lines = readFile(".minigit/objects/" + commit1);
     vector<string> commit2Lines = readFile(".minigit/objects/" + commit2);
 
-    size_t maxLines = max(commit1lines.size(), commit2lines.size());
+    size_t maxLines = max(commit1Lines.size(), commit2Lines.size());
 
     for(size_t i = 0; i < maxLines; i++){
         string commit1Line;
