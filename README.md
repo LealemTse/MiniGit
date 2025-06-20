@@ -1,5 +1,14 @@
 # 🧩MiniGit
 
+SECTION 4
+
+Bitanya Damtew UGR/9112/16
+
+Leaelem Tsehay UGR/8061/16
+
+Megdelawit Aynalem UGR/5929/16
+
+
 MiniGit is a minimal, C++-based version control system inspired by Git.
 ## Features
 
