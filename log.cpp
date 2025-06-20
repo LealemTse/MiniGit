@@ -1,21 +1,29 @@
 #include "log.h"
 #include <iostream>
-#include<ctime>
+#include <fstream>
+#include <ctime>
 
 using namespace std;
 
-void log::showLog(Repository &repo) {
-  Commit* current = repo.getHead();
-  if(!current) {
-    cout<<"No commits found yet" <<endl;
-    return;
-  }
-  while(current) {
-    cout<<"COMMIT: "<<current->hash<<endl;
-    cout<<"MADE BY: "<<current->madeby<<endl;
-    cout<<"DATE: "<<ctime(&current->timestamp);
-    cout<<"MESSAGE: "<<current->message<<endl;
-    cout<<"FILES: "<<current->blobHashes.size()<<"\n\n";
-    current=current->parent;
-  }
+void log::showLog() {
+    ifstream logFile(".minigit/log.txt");
+    if (!logFile) {
+        cout << "No commits found. Please commit something first." << endl;
+        return;
+    }
+
+    string hash, madeby, timestampStr, message, line;
+    while (getline(logFile, hash)) {
+        getline(logFile, madeby);
+        getline(logFile, timestampStr);
+        getline(logFile, message);
+        getline(logFile, line); // should be "---"
+
+        time_t ts = stol(timestampStr);
+
+        cout << "COMMIT:  " << hash << endl;
+        cout << "MADE BY: " << madeby << endl;
+        cout << "DATE:    " << ctime(&ts);
+        cout << "MESSAGE: " << message << "\n" << endl;
+    }
 }

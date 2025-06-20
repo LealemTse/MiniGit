@@ -4,7 +4,7 @@
 #include "Repository.h"
 class log {
 public:
-  static void showLog(Repository& repo);
+  static void showLog();
 };
 
 #endif //LOG_H

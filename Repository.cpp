@@ -1,11 +1,17 @@
 #define _NO_CPP_STD_BYTE 1
-#include <windows.h>
 #include "Repository.h"
 #include <cstdio>
 #include <sstream>
 #include <fstream>
 #include <iostream>
 #include <filesystem>
+#ifdef _WIN32
+  #include <windows.h>
+#else
+  #include <sys/stat.h>
+  #include <sys/types.h>
+  #include <cerrno>
+#endif
 
 using namespace std;
 namespace fs = std::filesystem;
@@ -203,7 +209,16 @@ void Repository::commit(const string& message, const string& madeby) {
     cout << "Created commit: " << newCommit->hash.substr(0, 8) << "\n"
          << "Date:   " << ctime(&newCommit->timestamp)
          << "Files:  " << newCommit->blobHashes.size() << endl;
-    head = newCommit;
+
+    ofstream logFile(gitDir + "/log.txt", ios::app);
+        if(logFile) {
+            logFile<<newCommit->hash<<"\n";
+            logFile<<newCommit->madeby<<"\n";
+            logFile<<newCommit->timestamp<<"\n";
+            logFile<<newCommit->message<<"\n";
+            logFile<<"---\n";
+            logFile.close();
+        }
     clearIndex();
 }
 

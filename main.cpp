@@ -1,4 +1,5 @@
 #include "Repository.h"
+#include "log.h"
 #include <iostream>
 #include <filesystem>
 
@@ -32,10 +33,13 @@ int main(int argc, char* argv[]) {
         }
         string message = argv[3];
         string madeby;
-        cout << "Enter author name: ";
+        cout << "Enter Made By name: ";
         getline(cin >> ws, madeby);
         repo.commit(message, madeby);
-      } else {
+      } else if(command == "log") {
+      log::showLog();
+    }
+      else {
         if (fs::exists(".minigit")) {
           cout << "MiniGit Repository Loaded Successfully" << endl;
         } else {
