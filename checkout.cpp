@@ -11,7 +11,7 @@ void Checkout::switchBranch(const string &branchName) {
   string branchRef = "refs/heads/"+branchName;
   string branchPath = gitDir + "/" + branchRef;
 
-  if(!fs::exits(branchPath)) {
+  if(!fs::exists(branchPath)) {
     cerr<<"ERROR: Branch "<<branchName<<" Does not Exist "<<endl;
     return;
   }
@@ -23,7 +23,7 @@ void Checkout::switchBranch(const string &branchName) {
   headFile<<"ref: "<<branchRef << "\n";
   headFile.close();
 
-  cout<<"Switched to Branch "<< branchName << "\n"
+  cout<<"Switched to Branch "<< branchName << "\n";
 }
 
 
