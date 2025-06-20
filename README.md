@@ -4,10 +4,14 @@ SECTION 4
 
 Bitanya Damtew UGR/9112/16
 
-Leaelem Tsehay UGR/8061/16
+Lealem Tsehay UGR/8061/16
 
 Megdelawit Aynalem UGR/5929/16
 
+Video Demo:
+https://drive.google.com/file/d/1V8k-XjgHlu3a8gUs05cYC_9Wci0EI0_w/view?usp=sharing
+
+the Video is in this zip file 
 
 MiniGit is a minimal, C++-based version control system inspired by Git.
 ## Features
