@@ -1,12 +1,14 @@
-# MiniGit
+# 🧩MiniGit
 
 MiniGit is a minimal, C++-based version control system inspired by Git.
 ## Features
 
 - `init` – initialize a new MiniGit repository
 - `add` – stage files for the next commit
-- `commit` – snapshot changes with a message and author
-- Persists staged files between runs (like Git's index)
+- `commit` – snapshot changes with a message and madeby
+- `log` - see all the detail of the file commited
+- `branch` - where one is working on and create a new branch to work on
+- `checkout` - jump over to another branch and checkout or work there 
 
 ---
 ##  Requirements
@@ -21,7 +23,7 @@ MiniGit is a minimal, C++-based version control system inspired by Git.
 Use `g++` to compile on any platform run:
 
 ```bash
-g++ -std=c++17 main.cpp Repository.cpp -o MiniGit
+g++ -std=c++17 main.cpp Repository.cpp branch.cpp log.cpp checkout.cpp -o MiniGit
 ```
 For windows user it will creat an .exe file but for linux /MacOs use it will make the main file excutable. 
 -When running the above command if you encunter any problem with your  C++ compiler plase follow this steps:
@@ -37,7 +39,7 @@ pacman -S mingw-w64-x86_64-gcc
 ```
 Then run this again:
 ```bash
-g++ -std=c++17 main.cpp Repository.cpp -o MiniGit
+g++ -std=c++17 main.cpp Repository.cpp branch.cpp log.cpp checkout.cpp -o MiniGit
 ```
 To creates a hidden .minigit/ folder for tracking changes:
 ```bash
@@ -56,12 +58,35 @@ When doing this it will ask for who made the commit as:
 Enter author name:
 ```
 you simply have enter your name:
+To veiw logs 
+```bash
+./MiniGit log
+```
+To creat and check branches:
+```bash
+./MiniGit branch
+```
+This will show you all the branchs you have
+```bash
+./MiniGit branch <branch_name>
+```
+This one will create you a new branch
+
+To move from one branch to onther or checkout anther branch
+```bash
+./MiniGit checkout
+```
 ##Example
 ```bash
-g++ -std=c++17 main.cpp Repository.cpp -o MiniGit
+g++ -std=c++17 main.cpp Repository.cpp branch.cpp log.cpp checkout.cpp -o MiniGit
 ./MiniGit init
+echo "Hello there this is MiniGit" >hello.txt
 ./MiniGit add hello.txt
 ./MiniGit commit -m "Add hello.txt"
+./MiniGit log
+./MiniGit branch
+./MiniGit branch Feature1
+./MiniGit checkout
 
 ```
 To Remove the init file run the following:
@@ -85,10 +110,8 @@ Remove-Item -Recurse -Force .minigit
 - [ ] **[Bitanya]** Implement `add(filename)` function with file hashing
 - [ ] **[Bitanya]** Implement `commit -m "message"` to save file snapshots
 - [ ] **[Lealem]** Implement `log` command to show commit history
-- [ ] **[Lealem]** Implement `branch <branch-name>` and store pointers
-- [ ] **[Lealem]** Implement `checkout <branch>` or `<commit-hash>`
+- [ ] **[Lealem]** Implement `branch` and store pointers
+- [ ] **[Lealem]** Implement `checkout <branch>` 
 - [ ] **[Megdelawit]** Design and implement `merge <branch>` using 3-way merge
 - [ ] **[Megdelawit]** Handle conflict detection and show conflict messages
 - [ ] **[Megdelawit]** Implement command-line interface (parse input)
-- [ ] Define and share core data structures (`Commit`, `Blob`, `HEAD`, etc.)
-- [ ] Set up file I/O system and helpers (`FileManager` class/module)
