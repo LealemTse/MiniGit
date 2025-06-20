@@ -8,4 +8,6 @@ add_executable(MiniGit
         Repository.cpp
         log.h
         log.cpp
+        branch.cpp
+        branch.h
 )
