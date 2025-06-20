@@ -1,5 +1,6 @@
 #define _NO_CPP_STD_BYTE 1
 #include "Repository.h"
+#include "branch.h"
 #include <cstdio>
 #include <sstream>
 #include <fstream>
@@ -84,11 +85,18 @@ void Repository::initRepo() {
     createDirectory(objectsDir);
     createDirectory(gitDir + "/refs");
     createDirectory(gitDir + "/refs/heads");
-
+//=====Write Head====================
     ofstream headFile(gitDir + "/HEAD");
     headFile << "ref: refs/heads/main\n";
     headFile.close();
 
+//==========Making an empty master branch file ===============
+    ofstream masterBranch(gitDir +"refs/heads/main");
+    if(masterBranch) masterBranch<<"";
+    masterBranch.close();
+
+
+    //========Write config============
     ofstream configFile(gitDir + "/config");
     configFile << "[core]\n";
     configFile << "repositoryformatversion = 0\n";
@@ -219,6 +227,11 @@ void Repository::commit(const string& message, const string& madeby) {
             logFile<<"---\n";
             logFile.close();
         }
+    ofstream branchFile(gitDir + "/refs/heads/main");
+    if(branchFile) {
+        branchFile << newCommit->hash <<endl;
+        branchFile.close();
+    }
     clearIndex();
 }
 

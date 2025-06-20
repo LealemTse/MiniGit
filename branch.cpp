@@ -8,7 +8,7 @@ using namespace std;
 Branch::Branch(const string &repoPath) : gitDir(repoPath){}
 
 void Branch::creatBranch(const string &name) {
-  string masterPath = gitDir + "/MASTER";
+  string masterPath = gitDir + "/HEAD";
   ifstream headFile(masterPath);
   if(!headFile) {
     cerr<<"ERROR: MASTER not Found, IS THIS MiniGit repo?" <<endl;
@@ -28,11 +28,17 @@ void Branch::creatBranch(const string &name) {
     cerr<<"ERROR: Current Branch Invalid." <<endl;
     return;
   }
+
   string lastCommitHash;
   getline(branchRef, lastCommitHash);
   branchRef.close();
+  if(lastCommitHash.empty()) {
+    cerr<<"ERROR:  Current Branch Has No Commits Yet. Cannot Branch From Nothing" <<endl;
+    return;
+  }
+
   string newBranchPath = gitDir+"/refs/heads/"+name;
-  if(fs::exists(newBranchPath) {
+  if(fs::exists(newBranchPath)){
     cerr<<"Branch Already Exists." <<endl;
     return;
   }
@@ -42,9 +48,13 @@ void Branch::creatBranch(const string &name) {
     cerr<<"ERROR: Could not Creat Branch File" <<endl;
     return;
   }
-
-  newBranchFile << lastCommitHash << endl;
-   newBranchFile.close();
+  ofstream out(newBranchPath);
+  if(!out) {
+    cerr <<"ERROR: Could not create branch file." <<endl;
+    return;
+  }
+   out << lastCommitHash << endl;
+   out.close();
    cout << "Created branch: " << name << endl;
 
 }
