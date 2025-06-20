@@ -40,7 +40,7 @@ pacman -S mingw-w64-x86_64-gcc
 ```
 Then run this again:
 ```bash
-g++ -std=c++17 main.cpp Repository.cpp branch.cpp log.cpp checkout.cpp -o MiniGit
+g++ -std=c++17 main.cpp Repository.cpp log.cpp branch.cpp checkout.cpp merge.cpp -o MiniGit
 ```
 To creates a hidden .minigit/ folder for tracking changes:
 ```bash
@@ -79,7 +79,7 @@ To move from one branch to onther or checkout anther branch
 ```
 ##Example
 ```bash
-g++ -std=c++17 main.cpp Repository.cpp branch.cpp log.cpp checkout.cpp -o MiniGit
+g++ -std=c++17 main.cpp Repository.cpp log.cpp branch.cpp checkout.cpp merge.cpp -o MiniGit
 ./MiniGit init
 echo "Hello there this is MiniGit" >hello.txt
 ./MiniGit add hello.txt
