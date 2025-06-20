@@ -23,7 +23,8 @@ MiniGit is a minimal, C++-based version control system inspired by Git.
 Use `g++` to compile on any platform run:
 
 ```bash
-g++ -std=c++17 main.cpp Repository.cpp branch.cpp log.cpp checkout.cpp -o MiniGit
+g++ -std=c++17 main.cpp Repository.cpp log.cpp branch.cpp checkout.cpp merge.cpp -o MiniGit
+
 ```
 For windows user it will creat an .exe file but for linux /MacOs use it will make the main file excutable. 
 -When running the above command if you encunter any problem with your  C++ compiler plase follow this steps:
