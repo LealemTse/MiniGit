@@ -10,4 +10,6 @@ add_executable(MiniGit
         log.cpp
         branch.cpp
         branch.h
+        checkout.cpp
+        checkout.h
 )

@@ -1,4 +1,5 @@
 #include "Repository.h"
+#include "checkout.h"
 #include "log.h"
 #include <iostream>
 #include <filesystem>
@@ -49,6 +50,13 @@ int main(int argc, char* argv[]) {
         cerr<<" minigit branch";
         cerr<<" minigit branch <name>";
       }
+    }else if(command=="checkout") {
+      if(argc<3) {
+        cerr<<"Usage: MiniGit checkout <branch> \n";
+        return 1;
+      }
+      Checkout co;
+      co.switchBranch(argv[2]);
     }
       else {
         if (fs::exists(".minigit")) {
