@@ -71,8 +71,11 @@ int main(int argc, char* argv[]) {
       string commitA= getBranchCommit(currentBranch);
       string commitB= getBranchCommit(targetBranch);
 
+      if (base.empty()) {
+        cout<<"WARNING: No common Ansestor Found"<<endl;
+      }
       merge(base,commitA,commitB);
-      cout<<"Usage: MiniGti diff <commit1><commit2>"<<endl;
+      cout << "Merge completed. Merged content written to .minigit/merged.txt"<<endl;
     }
       else if(command == "diff") {
         if(argc !=4) {

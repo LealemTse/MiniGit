@@ -20,11 +20,12 @@ string getCurrentBranch(){
     string line;
     getline(headFile, line);
 
-    if (line.substr(0, 5) == "ref: refs/heads/") {
+    if (line.substr(0, 16) == "ref: refs/heads/") {
         return line.substr(16);
     }else{
-        return "";
+        cerr<<"Invalid HEAD format: "+ line;
     }
+    return "";
 }
 
 
@@ -55,18 +56,15 @@ string getParentCommit(const string& commitId) {
 
 
 string getLeastCommonAnscestor(const string& branch1, const string& branch2){
-    set<string> ancestors; //to store all anscestrs of branch1
+    set<string> ancestors;
     string curr = branch1;
     
     while (!curr.empty()) {
         ancestors.insert(curr); 
         curr = getParentCommit(curr); 
     }
-    
 
     curr = branch2;
-
-    
     while (!curr.empty()) {
         if (ancestors.count(curr)){
             return curr;
@@ -74,8 +72,8 @@ string getLeastCommonAnscestor(const string& branch1, const string& branch2){
             curr = getParentCommit(curr);
         }
     }
+    return "";
 }
-
 
 vector<string> readFile(const string &path)
 {
@@ -111,8 +109,6 @@ void merge(const string &base, const string &currentBranch, const string &target
         if(baseLines.size()>i) baseLine = baseLines[i];
         if(currentBranchLines.size()>i) currentBranchLine = currentBranchLines[i];
         if(targetBranchLines.size()>i) targetBranchLine = targetBranchLines[i];
-
-        /
         if(baseLine==currentBranchLine && baseLine==targetBranchLine){
             result.push_back(baseLine);
         }else if (currentBranchLine == targetBranchLine){
