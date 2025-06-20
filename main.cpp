@@ -2,7 +2,7 @@
 #include "log.h"
 #include <iostream>
 #include <filesystem>
-
+#include "branch.h"
 using namespace std;
 namespace fs = std::filesystem;
 
@@ -38,6 +38,17 @@ int main(int argc, char* argv[]) {
         repo.commit(message, madeby);
       } else if(command == "log") {
       log::showLog();
+    }else if(command =="branch") {
+      Branch branch;
+      if(argc ==2) {
+        branch.listbranch();
+      }else if(argc==3) {
+        branch.creatBranch(argv[2]);
+      }else {
+        cerr<<"Usage: " <<endl;
+        cerr<<" minigit branch";
+        cerr<<" minigit branch <name>";
+      }
     }
       else {
         if (fs::exists(".minigit")) {

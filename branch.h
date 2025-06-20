@@ -8,7 +8,7 @@ class Branch {
 public:
   Branch(const string & repoPath = ".minigit");
 
-  void creatBranch(const strin& name);
+  void creatBranch(const string& name);
   void listbranch();
 
 
